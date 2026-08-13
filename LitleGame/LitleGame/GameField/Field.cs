@@ -8,69 +8,61 @@ namespace LitleGame.GameField
 {
     public class Field
     {
-        public void PrintField()
+        public void DrawFieldAndPlaterMovment()
         {
-            string[,] Field = new string[10, 10];
+            string[,] Field = new string[8, 19];
 
-            for (int i = 0; i < Field.GetLength(0); i++)
-            {
-                for (int j = 0; j < Field.GetLength(1); j++)
-                {
-                    Field[i, j] = "-";
-                }
-            }
-
-            for (int i = 0; i < Field.GetLength(0); i++)
-            {
-                for (int j = 0; j < Field.GetLength(1); j++)
-                {
-                    Console.Write(Field[i, j]);
-                }
-
-                Console.WriteLine();
-            }
-        }
-
-        public void PlayerMovement()
-        {
-            string[,] Field = new string[10, 10];
-            int playerX = 5;
+            int playerX = 14;
             int playerY = 0;
-            ConsoleKeyInfo keyInfo;
-            keyInfo = Console.ReadKey(true);
+
+            for (int y = 0; y < Field.GetLength(0); y++)
+            {
+                for (int x = 0; x < Field.GetLength(1); x++)
+                {
+                    if (y == playerY && x == playerX)
+                    {
+                        Field[y, x] = "P";
+                    }
+                    else
+                    {
+                        Field[y, x] = "-";
+                    }
+                }
+            }
+
             while (true)
             {
                 Console.Clear();
-                Field[playerY, playerX] = "-";
-                for (int i = 0; i < Field.GetLength(0); i++)
+
+                for (int y = 0; y < Field.GetLength(0); y++)
                 {
-                    for (int j = 0; j < Field.GetLength(1); j++)
+                    for (int x = 0; x < Field.GetLength(1); x++)
                     {
-                        if (keyInfo.Key == ConsoleKey.LeftArrow)
-                        {
-                            if (playerX > 0)
-                            {
-                                playerX--;
-                            }
-                        }
-                        else if (keyInfo.Key == ConsoleKey.RightArrow)
-                        {
-                            if (playerX < Field.GetLength(1) - 1)
-                            {
-                                playerX++;
-                            }
-                        }
+                        Console.Write(Field[y, x]);
                     }
-                }
-                for (int i = 0; i < Field.GetLength(0); i++)
-                {
-                    for (int j = 0; j < Field.GetLength(1); j++)
-                    {
-                        Console.Write(Field[i, j]);
-                    }
+
                     Console.WriteLine();
                 }
-                keyInfo = Console.ReadKey(true);
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+                if (keyInfo.Key == ConsoleKey.LeftArrow && playerX > 0)
+                {
+                    Field[playerY, playerX] = "-";
+
+                    playerX--;
+
+                    Field[playerY, playerX] = "P";
+                }
+                else if (keyInfo.Key == ConsoleKey.RightArrow &&
+                         playerX < Field.GetLength(1) - 1)
+                {
+                    Field[playerY, playerX] = "-";
+
+                    playerX++;
+
+                    Field[playerY, playerX] = "P";
+                }
             }
         }
     }
