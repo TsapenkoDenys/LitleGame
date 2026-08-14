@@ -8,8 +8,8 @@ namespace LitleGame.Model
 {
     public class Player
     {
-        string Nik_Name { get; set; }
-        int Points { get; set; }
+        public string Nik_Name { get; set; }
+        public int Points { get; set; }
 
     }
 }
