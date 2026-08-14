@@ -30,9 +30,9 @@
               "Title": "Field.cs",
               "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\LitleGame\\LitleGame\\LitleGame\\GameField\\Field.cs",
               "RelativeDocumentMoniker": "LitleGame\\GameField\\Field.cs",
-              "ToolTip": "C:\\Users\\User\\Documents\\GitHub\\LitleGame\\LitleGame\\LitleGame\\GameField\\Field.cs*",
-              "RelativeToolTip": "LitleGame\\GameField\\Field.cs*",
-              "ViewState": "AgIAAIUAAAAAAAAAAAAYwIsAAABRAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\User\\Documents\\GitHub\\LitleGame\\LitleGame\\LitleGame\\GameField\\Field.cs",
+              "RelativeToolTip": "LitleGame\\GameField\\Field.cs",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAqwHwAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-10T09:02:18.048Z",
               "IsPinned": true,
@@ -56,8 +56,7 @@
               "RelativeToolTip": "LitleGame\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-10T09:00:14.516Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-10T09:00:14.516Z"
             }
           ]
         },
