@@ -12,7 +12,7 @@ namespace LitleGame
         static void Main(string[] args)
         {
            Field field = new Field();
-            field.DrawFieldAndPlaterMovment();
+            field.DrawGame();
         }
     }
 }
