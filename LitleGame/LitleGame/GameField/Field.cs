@@ -17,7 +17,8 @@ namespace LitleGame.GameField
         private int playerY = 15;
         private int ballX = 27;
         private int ballY = 14;
-       
+        private int Reverse = 0;
+
 
         public void DrawMainField()
         {
@@ -28,7 +29,6 @@ namespace LitleGame.GameField
                     if (y >= 8)
                     {
                         GameField[y, x] = " ";
-
                     }
                     else
                     {
@@ -86,55 +86,115 @@ namespace LitleGame.GameField
 
         public void BallMovment()
         {
-            for (int y = 0; y < GameField.GetLength(0); y++)
+            //for (int y = 0; y < GameField.GetLength(0); y++)
+            //{
+            //    for (int x = 0; x < GameField.GetLength(1); x++)
+            //    {
+
+            //        if(ballY < GameField.GetLength(0) && ballX > GameField.GetLength(1))
+            //        {
+            //            GameField[ballY, ballX] = " ";
+            //            ballY++;
+            //            ballX--;
+            //            GameField[ballY, ballX] = "O";
+            //        }
+            //    }
+            //}
+
+            
+            if(ballY != 0 && Reverse != 1)
             {
-                for (int x = 0; x < GameField.GetLength(1); x++)
-                {
-                    GameField[ballY, ballX] = " ";
-                    ballY--;
-                    ballX++;
-                    GameField[ballY, ballX] = "O";
+                MovingBallUp();
+            }
+            else
+            {
+                Reverse = 1;
+                ballX += 2;
+                MovingBallDown();
+                
+            }
+           
+            
 
-                    if (ballY >= GameField.GetLength(1))
-                    {
-                        ballY--;
-                        ballX++;
-                    }
+         
 
-                }
+            //if(ballY < 1)
+            //{
+            //    ballY++;
+            //}
+
+        }
+
+        public void MovingBallDown()
+        {
+            GameField[ballY, ballX] = " ";
+
+            if (ballY >= 15)
+            {
+                Reverse = 0;
+                ballX = 56;
+                MovingBallUp();
+                return;
+            }
+
+            ballY++;
+            ballX--;
+
+            GameField[ballY, ballX] = "O";
+
+            if (ballX < 0)
+            {
+                Reverse = 1;
             }
         }
 
-        //public void BallMovment()
-        //{
-        //    for (int y = 0; y < GameField.GetLength(0); y++)
-        //    {
-        //        for (int x = 0; x < GameField.GetLength(1); x++)
-        //        {
-        //            if (y == ballY && x == ballX)
-        //            {
-        //                GameField[y, x] = " ";
-        //                ballY++;
-        //            }
 
-        //            if(ballY >= GameField.GetLength(0))
-        //            {
-        //                ballY *= -1;
-        //            }
-        //            else if (ballY == playerY && ballX == playerX)
-        //            {
-        //                ballX = playerY;
-        //                ballY++;
-        //            }
-        //            else if(ballX >= GameField.GetLength(1))
-        //            {
-        //                ballX *= -1;
-        //            }
+        public void MovingBallUp()
+        {
+            GameField[ballY, ballX] = " ";
 
-        //            GameField[ballY, ballX] = "O";
-        //        }
-        //    }
-        //}
+            if (ballX >= 59)
+            {
+                Reverse = 0;
+                ballY += 2;
+                MovingBallDown();
+
+                return;
+            }
+
+            ballY--;
+            ballX++;
+
+            GameField[ballY, ballX] = "O";
+        }
+
+
+        public void MovingBallUppLeft()
+        {
+            GameField[ballY, ballX] = " ";
+
+            if (ballY > 0)
+                ballY--;
+
+            if (ballX > 0)
+                ballX--;
+
+            GameField[ballY, ballX] = "O";
+        }
+
+        public void MovingBallDownLeft()
+        {
+            GameField[ballY, ballX] = " ";
+
+            if (ballY < GameField.GetLength(0) - 1)
+                ballY++;
+
+            if (ballX > 0)
+                ballX--;
+
+            GameField[ballY, ballX] = "O";
+        }
+
 
         public void DrawGame()
         {
@@ -144,7 +204,7 @@ namespace LitleGame.GameField
                 Console.SetCursorPosition(0, 0);
                 Console.CursorVisible = false;
                 PlayerMovment();
-                //BallMovment();
+                BallMovment();
                 
             }
 
