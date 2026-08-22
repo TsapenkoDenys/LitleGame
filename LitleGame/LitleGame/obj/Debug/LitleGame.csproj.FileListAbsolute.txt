@@ -1,7 +1,0 @@
-C:\Users\User\Documents\GitHub\LitleGame\LitleGame\LitleGame\bin\Debug\LitleGame.exe.config
-C:\Users\User\Documents\GitHub\LitleGame\LitleGame\LitleGame\bin\Debug\LitleGame.exe
-C:\Users\User\Documents\GitHub\LitleGame\LitleGame\LitleGame\bin\Debug\LitleGame.pdb
-C:\Users\User\Documents\GitHub\LitleGame\LitleGame\LitleGame\obj\Debug\LitleGame.csproj.AssemblyReference.cache
-C:\Users\User\Documents\GitHub\LitleGame\LitleGame\LitleGame\obj\Debug\LitleGame.csproj.CoreCompileInputs.cache
-C:\Users\User\Documents\GitHub\LitleGame\LitleGame\LitleGame\obj\Debug\LitleGame.exe
-C:\Users\User\Documents\GitHub\LitleGame\LitleGame\LitleGame\obj\Debug\LitleGame.pdb
