@@ -4,3 +4,5 @@
 
 /LitleGame/.vs/**/*
 obj/Debug/**/*
+/LitleGame/LitleGame/bin/Debug
+/LitleGame/LitleGame/obj/Debug
