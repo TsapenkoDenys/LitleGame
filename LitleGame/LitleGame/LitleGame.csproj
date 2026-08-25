@@ -7,7 +7,7 @@
     <ProjectGuid>{25AA1009-3805-41DE-8010-4D9230965E26}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>LitleGame</RootNamespace>
-    <AssemblyName>LitleGame</AssemblyName>
+    <AssemblyName>o</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -44,6 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameField\Field.cs" />
+    <Compile Include="GameField\Models\Coordinate.cs" />
+    <Compile Include="GameField\Models\GameModel.cs" />
+    <Compile Include="GameField\Models\Position.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
