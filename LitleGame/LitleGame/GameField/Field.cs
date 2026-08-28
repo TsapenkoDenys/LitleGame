@@ -18,30 +18,29 @@ namespace LitleGame.GameField
         private int playerY = 15;  
         private int Reverse = 0;
 
-
         GameModel gm  = new GameModel();
         Coordinate cords = new Coordinate();
 
         HashSet<Coordinate> coordibates = new HashSet<Coordinate>();
-        
 
-        public Position CallcPositon(Position p,  int screenMax) {
-            Position position = new Position(p); 
 
-            if(position.index >= screenMax || position.index <= 0)
+        public Position CallcPositon(Position p, int screenMax) {
+            Position position = new Position(p);
+
+            if (position.index >= screenMax || position.index <= 0 )
                 position.isReverse = !position.isReverse;
 
-            if (position.isReverse) 
+            if (position.isReverse ) 
                 position.index++; 
             else 
                 position.index--;
-            
 
             return position;
         }
 
         public void DrawMainField(GameModel gm)
         {
+            Position position = new Position();
 
             for (int y_elementArrPos = 0; y_elementArrPos < GameField.GetLength(0); ++y_elementArrPos)
             {
@@ -49,6 +48,14 @@ namespace LitleGame.GameField
                 {
                     cords.x_gameElement = x_elementArrPos;
                     cords.y_gameElement = y_elementArrPos;
+
+                    //if (GameField[y_elementArrPos, x_elementArrPos] == "#")
+                    //{
+                    //    //position.x_game_pos = x_elementArrPos;
+                    //    //position.y_game_pos = x_elementArrPos;
+
+                    //}
+                    
 
                     if (y_elementArrPos >= 8)
                     {
@@ -58,10 +65,11 @@ namespace LitleGame.GameField
                     {
                         if (coordibates.Any(s => s.y_ball_cord == cords.y_gameElement && s.x_ball_cord == cords.x_gameElement))
                         {
-                            GameField[y_elementArrPos, x_elementArrPos] = " ";
+                                GameField[y_elementArrPos, x_elementArrPos] = " ";
                         }
                         else
                             GameField[y_elementArrPos, x_elementArrPos] = "#";
+                           
 
                     }
                     if (y_elementArrPos == playerY && x_elementArrPos == gm.xDash.index)
@@ -71,6 +79,7 @@ namespace LitleGame.GameField
                     if (y_elementArrPos == gm.y_ball.index && x_elementArrPos == gm.x_ball.index)
                     {
                         GameField[y_elementArrPos, x_elementArrPos] = "O";
+
                         coordibates.Add(new Coordinate
                         {
                             x_ball_cord = x_elementArrPos,
@@ -119,8 +128,43 @@ namespace LitleGame.GameField
 
         }
 
+        private bool isBrickAt(int x, int y)
+        {
+            if (y < 0 || y >= 8)
+            {
+                return false;
+            }
+
+            bool alreadyDestroyed = coordibates.Any(c => c.x_ball_cord == x && c.y_ball_cord == y);
+            return !alreadyDestroyed;
+
+            
+        }
+
+        private void DestroyBrickAt(int x, int y)
+        {
+            coordibates.Add(new Coordinate { x_ball_cord = x, y_ball_cord = y });
+        }
+
         public void BallMovment(GameModel gm)
         {
+
+            int nextX = gm.x_ball.isReverse ? gm.x_ball.index + 1 : gm.x_ball.index - 1;
+            int nextY = gm.y_ball.isReverse ? gm.y_ball.index + 1 : gm.y_ball.index - 1;
+
+            if (isBrickAt(nextX, gm.y_ball.index))
+            {
+                gm.x_ball.isReverse = !gm.x_ball.isReverse;
+                DestroyBrickAt(nextX, gm.y_ball.index);
+            }
+
+            if (isBrickAt(gm.x_ball.index, nextY))
+            {
+                gm.y_ball.isReverse = !gm.y_ball.isReverse;
+                DestroyBrickAt(gm.x_ball.index, nextY);
+            }
+
+
             gm.y_ball = CallcPositon(gm.y_ball, GameField.GetLength(0));
             gm.x_ball = CallcPositon(gm.x_ball, GameField.GetLength(1));
             //for (int y = 0; y < GameField.GetLength(0); y++)

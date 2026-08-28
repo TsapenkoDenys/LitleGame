@@ -24,5 +24,7 @@ namespace LitleGame.GameField
 
         public int index;
         public bool isReverse;
+        public int x_game_pos;
+        public int y_game_pos;
     }
 }
