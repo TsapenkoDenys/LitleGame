@@ -45,7 +45,10 @@
   <ItemGroup>
     <Compile Include="GameField\Field.cs" />
     <Compile Include="GameField\Models\Coordinate.cs" />
+    <Compile Include="GameField\Models\FieldModel.cs" />
     <Compile Include="GameField\Models\GameModel.cs" />
+    <Compile Include="GameField\Models\MathModel.cs" />
+    <Compile Include="GameField\Models\PlayerModel.cs" />
     <Compile Include="GameField\Models\Position.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Program.cs" />

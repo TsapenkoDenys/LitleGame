@@ -8,6 +8,8 @@ namespace LitleGame.GameField.Models
 {
     public class Coordinate
     {
+        public HashSet<Coordinate> coordibates = new HashSet<Coordinate>();
+
         public int x_ball_cord;
         public int y_ball_cord;
 
