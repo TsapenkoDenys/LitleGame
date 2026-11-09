@@ -13,7 +13,7 @@ namespace LitleGame.GameField
 {
     public class Field
     {
-        MathModel math_operations = new MathModel();
+        MathModel mathOperations = new MathModel();
         PlayerModel player_models = new PlayerModel();
         FieldModel field = new FieldModel();
         GameModel gm  = new GameModel();
@@ -25,40 +25,32 @@ namespace LitleGame.GameField
         {
             Position position = new Position();
 
-            for (int y_elementArrPos = 0; y_elementArrPos <  field.GameField.GetLength(0); ++y_elementArrPos)
+            for (int yElementArrPos = 0; yElementArrPos < field.GameField.GetLength(0); ++yElementArrPos)
             {
-                for (int x_elementArrPos = 0; x_elementArrPos < field.GameField.GetLength(1); ++x_elementArrPos)
+                for (int xElementArrPos = 0; xElementArrPos < field.GameField.GetLength(1); ++xElementArrPos)
                 {
-                    cords.x_gameElement = x_elementArrPos;
-                    cords.y_gameElement = y_elementArrPos;
-                    
-                    if (y_elementArrPos >= 8)
-                    {
-                        field.GameField[y_elementArrPos, x_elementArrPos] = " ";
-                    }
-                    else
-                    {
-                        if (coordibates.Any(s => s.y_ball_cord == cords.y_gameElement && s.x_ball_cord == cords.x_gameElement))
-                        {
-                                field.GameField[y_elementArrPos, x_elementArrPos] = " ";
-                        }
-                        else
-                            field.GameField[y_elementArrPos, x_elementArrPos] = "#";
-                           
+                    cords.x_gameElement = xElementArrPos;
+                    cords.y_gameElement = yElementArrPos;
 
-                    }
-                    if (y_elementArrPos == player_models.playerY && x_elementArrPos == gm.xDash.index)
+                    field.GameField[yElementArrPos, xElementArrPos] = yElementArrPos >= 8 ? " " : "#";
+
+                    if (coordibates.Any(s => s.y_ball_cord == cords.y_gameElement && s.x_ball_cord == cords.x_gameElement))
                     {
-                        field.GameField[y_elementArrPos, x_elementArrPos] = "-";
-                    }
-                    if (y_elementArrPos == gm.y_ball.index && x_elementArrPos == gm.x_ball.index)
+                        field.GameField[yElementArrPos, xElementArrPos] = " ";
+                    }else
+                        field.GameField[yElementArrPos, xElementArrPos] = "#";
+
+                    field.GameField[yElementArrPos, xElementArrPos] = yElementArrPos == player_models.playerY 
+                        && xElementArrPos == gm.xDash.index ? "-" : " ";
+
+                    if (yElementArrPos == gm.y_ball.index && xElementArrPos == gm.x_ball.index)
                     {
-                        field.GameField[y_elementArrPos, x_elementArrPos] = "O";
+                        field.GameField[yElementArrPos, xElementArrPos] = "O";
 
                         coordibates.Add(new Coordinate
                         {
-                            x_ball_cord = x_elementArrPos,
-                            y_ball_cord = y_elementArrPos
+                            x_ball_cord = xElementArrPos,
+                            y_ball_cord = yElementArrPos
                         });
                     }
                 }
@@ -85,21 +77,21 @@ namespace LitleGame.GameField
             int nextX = gm.x_ball.isReverse ? gm.x_ball.index + 1 : gm.x_ball.index - 1;
             int nextY = gm.y_ball.isReverse ? gm.y_ball.index + 1 : gm.y_ball.index - 1;
 
-            if (math_operations.isBrickAt(nextX, gm.y_ball.index))
+            if (mathOperations.isBrickAt(nextX, gm.y_ball.index))
             {
                 gm.x_ball.isReverse = !gm.x_ball.isReverse;
                 DestroyBrickAt(nextX, gm.y_ball.index);
             }
 
-            if (math_operations.isBrickAt(gm.x_ball.index, nextY))
+            if (mathOperations.isBrickAt(gm.x_ball.index, nextY))
             {
                 gm.y_ball.isReverse = !gm.y_ball.isReverse;
                 DestroyBrickAt(gm.x_ball.index, nextY);
             }
 
 
-            gm.y_ball = math_operations.CallcPositon(gm.y_ball, field.GameField.GetLength(0));
-            gm.x_ball = math_operations.CallcPositon(gm.x_ball, field.GameField.GetLength(1));
+            gm.y_ball = mathOperations.CallcPositon(gm.y_ball, field.GameField.GetLength(0));
+            gm.x_ball = mathOperations.CallcPositon(gm.x_ball, field.GameField.GetLength(1));
 
         }
         public void DrawGame()
@@ -109,7 +101,7 @@ namespace LitleGame.GameField
                 DrawMainField(this.gm);
                 Console.SetCursorPosition(0, 0);
                 Console.CursorVisible = false;
-                math_operations.PlayerMovment(this.gm);
+                mathOperations.PlayerMovment(this.gm);
                 BallMovment(this.gm);
                 
             }

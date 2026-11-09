@@ -18,6 +18,7 @@ namespace LitleGame.GameField.Models
         public void PlayerMovment(GameModel gm)
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
             if (keyInfo.Key == ConsoleKey.LeftArrow && gm.xDash.index > 0)
             {
                 field.GameField[player.playerY, gm.xDash.index] = " ";
