@@ -42,20 +42,19 @@ namespace LitleGame.GameField
                     }
                     else
                     {
-
-                        if (coordibates.Any(s => s.y_ball_cord == cords.y_gameElement && s.x_ball_cord == cords.x_gameElement))
-                        {
-                                GameField[y_elementArrPos, x_elementArrPos] = " ";
-                        }
-                        else
-                            GameField[y_elementArrPos, x_elementArrPos] = "#";
-                           
-
+                        GameField[y_elementArrPos, x_elementArrPos] =
+                            coordibates.Any(s => s.y_ball_cord == cords.y_gameElement && s.x_ball_cord == cords.x_gameElement) ? " " : "#";
                     }
+
+                    //GameField[y_elementArrPos, x_elementArrPos] = y_elementArrPos == playerY && x_elementArrPos == gm.xDash.index ? " " : "-";
+
                     if (y_elementArrPos == playerY && x_elementArrPos == gm.xDash.index)
                     {
                         GameField[y_elementArrPos, x_elementArrPos] = "-";
                     }
+
+
+
                     if (y_elementArrPos == gm.y_ball.index && x_elementArrPos == gm.x_ball.index)
                     {
                         GameField[y_elementArrPos, x_elementArrPos] = "O";
