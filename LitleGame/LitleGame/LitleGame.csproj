@@ -43,16 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\Models\MathAndLogicModel.cs" />
     <Compile Include="GameField\Field.cs" />
-    <Compile Include="GameField\Models\Coordinate.cs" />
-    <Compile Include="GameField\Models\GameModel.cs" />
-    <Compile Include="GameField\Models\Position.cs" />
+    <Compile Include="BLL\Models\Coordinate.cs" />
+    <Compile Include="BLL\Models\GameModel.cs" />
+    <Compile Include="BLL\Models\Position.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GameField\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
