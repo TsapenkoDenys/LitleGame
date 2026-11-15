@@ -15,49 +15,60 @@ namespace LitleGame.GameField
     public class Field
     {
 
-        private string[,] GameField = new string[16, 60];
-        private int playerY = 15;  
+        private string[,] _gameField = new string[16, 60];
+        private int _playerY = 15;  
         private int Reverse = 0;
 
         GameModel gm  = new GameModel();
         Coordinate cords = new Coordinate();
         MathAndLogicModel mathAndLogic = new MathAndLogicModel();
         HashSet<Coordinate> coordibates = new HashSet<Coordinate>();
+        Field fd =  new Field();
+
+        public string[,] GameField
+        {
+            get { return _gameField; }
+            set { _gameField = value; }
+        }
+
+        public int PlayerY
+        {
+            get { return _playerY; }
+            set { _playerY = value; }
+        }
 
 
         public void DrawMainField(GameModel gm)
         {
             Position position = new Position();
 
-            for (int y_elementArrPos = 0; y_elementArrPos < GameField.GetLength(0); ++y_elementArrPos)
+            for (int y_elementArrPos = 0; y_elementArrPos < _gameField.GetLength(0); ++y_elementArrPos)
             {
-                for (int x_elementArrPos = 0; x_elementArrPos < GameField.GetLength(1); ++x_elementArrPos)
+                for (int x_elementArrPos = 0; x_elementArrPos < _gameField.GetLength(1); ++x_elementArrPos)
                 {
                     cords.x_gameElement = x_elementArrPos;
                     cords.y_gameElement = y_elementArrPos;
 
                     if (y_elementArrPos >= 8)
                     {
-                        GameField[y_elementArrPos, x_elementArrPos] = " ";
+                        _gameField[y_elementArrPos, x_elementArrPos] = " ";
                     }
                     else
                     {
-                        GameField[y_elementArrPos, x_elementArrPos] =
+                        _gameField[y_elementArrPos, x_elementArrPos] =
                             coordibates.Any(s => s.y_ball_cord == cords.y_gameElement && s.x_ball_cord == cords.x_gameElement) ? " " : "#";
                     }
 
-                    //GameField[y_elementArrPos, x_elementArrPos] = y_elementArrPos == playerY && x_elementArrPos == gm.xDash.index ? " " : "-";
-
-                    if (y_elementArrPos == playerY && x_elementArrPos == gm.xDash.index)
+                    if (y_elementArrPos == _playerY && x_elementArrPos == gm.xDash.index)
                     {
-                        GameField[y_elementArrPos, x_elementArrPos] = "-";
+                        _gameField[y_elementArrPos, x_elementArrPos] = "-";
                     }
 
 
 
                     if (y_elementArrPos == gm.y_ball.index && x_elementArrPos == gm.x_ball.index)
                     {
-                        GameField[y_elementArrPos, x_elementArrPos] = "O";
+                        _gameField[y_elementArrPos, x_elementArrPos] = "O";
 
                         coordibates.Add(new Coordinate
                         {
@@ -68,41 +79,16 @@ namespace LitleGame.GameField
                 }
             }
 
-            for (int y = 0; y < GameField.GetLength(0); y++)
+            for (int y = 0; y < _gameField.GetLength(0); y++)
             {
-                for (int x = 0; x < GameField.GetLength(1); x++)
+                for (int x = 0; x < _gameField.GetLength(1); x++)
                 {
-                    Console.Write(GameField[y, x]);
+                    Console.Write(_gameField[y, x]);
                 }
                 Console.WriteLine();
             }
         }
-
-        public void PlayerMovment(GameModel gm)
-        {
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-            if (keyInfo.Key == ConsoleKey.LeftArrow && gm.xDash.index > 0)
-            {
-                GameField[playerY, gm.xDash.index] = " ";
-                gm.xDash.index--;
-
-                GameField[playerY, gm.xDash.index] = "-";
-                
-            }
-            else if (keyInfo.Key == ConsoleKey.RightArrow &&
-                     gm.xDash.index < GameField.GetLength(1) - 1)
-            {
-                GameField[playerY, gm.xDash.index] = " ";
-                gm.xDash.index++;
-                GameField[playerY, gm.xDash.index] = "-";
-            }
-            else if (keyInfo.Key == ConsoleKey.Escape)
-            {
-                return;
-            }
-
-        }
-
+        
         private bool isBrickAt(int x, int y)
         {
             if (y < 0 || y >= 8)
@@ -139,8 +125,8 @@ namespace LitleGame.GameField
             }
 
 
-            gm.y_ball = mathAndLogic.CallcPositon(gm.y_ball, GameField.GetLength(0));
-            gm.x_ball = mathAndLogic.CallcPositon(gm.x_ball, GameField.GetLength(1));
+            gm.y_ball = mathAndLogic.CallcPositon(gm.y_ball, _gameField.GetLength(0));
+            gm.x_ball = mathAndLogic.CallcPositon(gm.x_ball, _gameField.GetLength(1));
             
         }
        
@@ -151,7 +137,7 @@ namespace LitleGame.GameField
                 DrawMainField(this.gm);
                 Console.SetCursorPosition(0, 0);
                 Console.CursorVisible = false;
-                PlayerMovment(this.gm);
+                mathAndLogic.PlayerMovment(this.gm, this.fd);
                 BallMovment(this.gm);
                 
             }

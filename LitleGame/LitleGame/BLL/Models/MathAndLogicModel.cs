@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LitleGame.BLL.Models
 {
+    
     public class MathAndLogicModel
     {
         public Position CallcPositon(Position p, int screenMax)
@@ -22,6 +23,33 @@ namespace LitleGame.BLL.Models
                 position.index--;
 
             return position;
+        }
+        
+        public void PlayerMovment(GameModel gm, Field fd)
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+            if (keyInfo.Key == ConsoleKey.LeftArrow && gm.xDash.index > 0)
+            {
+                fd.GameField[fd.PlayerY, gm.xDash.index] = " ";
+
+                gm.xDash.index--;
+
+                fd.GameField[fd.PlayerY, gm.xDash.index] = "-";
+            }
+            else if (keyInfo.Key == ConsoleKey.RightArrow &&
+                     gm.xDash.index < fd.GameField.GetLength(1) - 1)
+            {
+                fd.GameField[fd.PlayerY, gm.xDash.index] = " ";
+
+                gm.xDash.index++;
+
+                fd.GameField[fd.PlayerY, gm.xDash.index] = "-";
+            }
+            else if (keyInfo.Key == ConsoleKey.Escape)
+            {
+                return;
+            }
         }
     }
 }
