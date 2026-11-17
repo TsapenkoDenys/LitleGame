@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LitleGame.GameField
 {
+    /// <summary>
+    /// Class of objects' positions
+    /// </summary>
     public class Position
     {
         public Position() { }

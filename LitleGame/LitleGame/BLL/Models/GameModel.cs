@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LitleGame.GameField
 {
+    /// <summary>
+    /// Main game model class of positions
+    /// </summary>
     public class GameModel
     {
 

@@ -21,6 +21,7 @@ namespace LitleGame.BLL.Models
         /// <param name="p">The current position.</param>
         /// <param name="screenMax">The maximum index on the axis.</param>
         /// <returns>The new position.</returns>
+        /// 
         public Position CallcPositon(Position p, int screenMax)
         {
             Position position = new Position(p);

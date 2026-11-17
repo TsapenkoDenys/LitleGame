@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LitleGame.GameField.Models
 {
+    /// <summary>
+    /// Coordinate class of objects
+    /// </summary>
     public class Coordinate
     {
         public int x_ball_cord;
