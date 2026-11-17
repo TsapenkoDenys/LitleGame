@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace LitleGame.GameField
 {
+    /// <summary>
+    /// Holds the game field state and renders it to the console.
+    /// </summary>
     public class Field
     {
         private const int _fieldHeight = 16;
@@ -21,7 +24,7 @@ namespace LitleGame.GameField
         private const string _ballSymbol = "O";
 
         private readonly string[,] _gameField =
-            new string[_fieldHeight, _fieldHeight];
+            new string[_fieldHeight, _fieldWidth];
 
         private readonly GameModel _gameModel = new GameModel();
 
@@ -33,22 +36,51 @@ namespace LitleGame.GameField
 
         private int _playerY = _initialPlayerY;
 
+        /// <summary>
+        /// Gets the grid of cell symbols.
+        /// </summary>
         public string[,] GameField
         {
             get { return _gameField; }
         }
 
+        /// <summary>
+        /// Gets or sets the row of the player's dash.
+        /// </summary>
         public int PlayerY
         {
             get { return _playerY; }
             set { _playerY = value; }
         }
-         
+
+        /// <summary>
+        /// Gets the number of rows occupied by bricks.
+        /// </summary>
         public int BrickHeight
         {
             get { return _brickHeight; }
         }
 
+        /// <summary>
+        /// Gets the field height in cells.
+        /// </summary>
+        public int FieldHeight
+        {
+            get { return _fieldHeight; }
+        }
+
+        /// <summary>
+        /// Gets the field width in cells.
+        /// </summary>
+        public int FieldWidth
+        {
+            get { return _fieldWidth; }
+        }
+
+        /// <summary>
+        /// Rebuilds the grid from the game model and prints it.
+        /// </summary>
+        /// <param name="gameModel">The current game state.</param>
         public void DrawMainField(GameModel gameModel)
         {
             InitializeField();
@@ -63,7 +95,7 @@ namespace LitleGame.GameField
             {
                 for (int x = 0; x < _fieldWidth; x++)
                 {
-                    if (y >= BrickHeight || IsBrickDestroyed(x, y))
+                    if ((y >= BrickHeight) || IsBrickDestroyed(x, y))
                     {
                         _gameField[y, x] = _emptyCell;
                     }
@@ -109,64 +141,44 @@ namespace LitleGame.GameField
             }
         }
 
-        private bool IsInsideField(int x, int y)
+        /// <summary>
+        /// Checks whether the cell lies within the field bounds.
+        /// </summary>
+        /// <param name="x">The column index.</param>
+        /// <param name="y">The row index.</param>
+        /// <returns>True if the cell is inside the field.</returns>
+        public bool IsInsideField(int x, int y)
         {
-            return x >= 0 &&
-                   x < _fieldWidth &&
-                   y >= 0 &&
-                   y < _fieldHeight;
+            return (x >= 0)
+                   && (x < _fieldWidth)
+                   && (y >= 0)
+                   && (y < _fieldHeight);
         }
 
-       
-
-        private bool IsBrickDestroyed(int x, int y)
+        /// <summary>
+        /// Checks whether the brick in the cell was destroyed.
+        /// </summary>
+        /// <param name="x">The column index.</param>
+        /// <param name="y">The row index.</param>
+        /// <returns>True if the brick was destroyed.</returns>
+        public bool IsBrickDestroyed(int x, int y)
         {
             return _destroyedBricks.Contains((x, y));
         }
 
-        private void DestroyBrickAt(int x, int y)
+        /// <summary>
+        /// Marks the brick in the cell as destroyed.
+        /// </summary>
+        /// <param name="x">The column index.</param>
+        /// <param name="y">The row index.</param>
+        public void DestroyBrickAt(int x, int y)
         {
             _destroyedBricks.Add((x, y));
         }
 
-        public void MoveBall(GameModel gameModel)
-        {
-            int currentX = gameModel.x_ball.index;
-            int currentY = gameModel.y_ball.index;
-
-            int nextX = gameModel.x_ball.IsReverse
-                ? currentX + 1
-                : currentX - 1;
-
-            int nextY = gameModel.y_ball.IsReverse
-                ? currentY + 1
-                : currentY - 1;
-
-            if (IsBrickAt(nextX, currentY))
-            {
-                gameModel.x_ball.IsReverse =
-                    !gameModel.x_ball.IsReverse;
-
-                DestroyBrickAt(nextX, currentY);
-            }
-
-            if (IsBrickAt(currentX, nextY))
-            {
-                gameModel.y_ball.IsReverse =
-                    !gameModel.y_ball.IsReverse;
-
-                DestroyBrickAt(currentX, nextY);
-            }
-
-            gameModel.y_ball = _mathAndLogic.CallcPositon(
-                gameModel.y_ball,
-                _fieldHeight);
-
-            gameModel.x_ball = _mathAndLogic.CallcPositon(
-                gameModel.x_ball,
-                _fieldWidth);
-        }
-
+        /// <summary>
+        /// Runs the main game loop.
+        /// </summary>
         public void DrawGame()
         {
             Console.CursorVisible = false;
@@ -179,7 +191,7 @@ namespace LitleGame.GameField
 
                 _mathAndLogic.PlayerMovement(_gameModel, this);
 
-                MoveBall(_gameModel);
+                _mathAndLogic.MoveBall(_gameModel, this);
             }
         }
     }
