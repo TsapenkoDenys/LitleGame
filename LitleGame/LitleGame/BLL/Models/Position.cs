@@ -10,20 +10,20 @@ namespace LitleGame.GameField
     {
         public Position() { }
 
-        public Position(int index, bool isReverse)
+        public Position(int index, bool IsReverse)
         {
             this.index = index;
-            this.isReverse = isReverse;
+            this.IsReverse = IsReverse;
         }
 
         public Position(Position p)
         {
             this.index = p.index;
-            this.isReverse = p.isReverse;
+            this.IsReverse = p.IsReverse;
         }
 
         public int index;
-        public bool isReverse;
+        public bool IsReverse;
         public int x_game_pos;
         public int y_game_pos;
     }

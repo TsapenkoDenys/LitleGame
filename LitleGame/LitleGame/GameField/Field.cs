@@ -1,34 +1,41 @@
-﻿using LitleGame.BLL.Models;
+﻿
+using LitleGame.BLL.Models;
 using LitleGame.GameField.Models;
 using LitleGame.Model;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.XPath;
 
 namespace LitleGame.GameField
 {
     public class Field
     {
+        private const int _fieldHeight = 16;
+        private const int _fieldWidth = 60;
+        private const int _brickHeight = 8;
+        private const int _initialPlayerY = 15;
 
-        private string[,] _gameField = new string[16, 60];
-        private int _playerY = 15;  
-        private int Reverse = 0;
+        private const string _emptyCell = " ";
+        private const string _brickSymbol = "#";
+        private const string _playerSymbol = "-";
+        private const string _ballSymbol = "O";
 
-        GameModel gm  = new GameModel();
-        Coordinate cords = new Coordinate();
-        MathAndLogicModel mathAndLogic = new MathAndLogicModel();
-        HashSet<Coordinate> coordibates = new HashSet<Coordinate>();
-        Field fd =  new Field();
+        private readonly string[,] _gameField =
+            new string[_fieldHeight, _fieldHeight];
+
+        private readonly GameModel _gameModel = new GameModel();
+
+        private readonly MathAndLogicModel _mathAndLogic =
+            new MathAndLogicModel();
+
+        private readonly HashSet<(int X, int Y)> _destroyedBricks =
+            new HashSet<(int X, int Y)>();
+
+        private int _playerY = _initialPlayerY;
 
         public string[,] GameField
         {
             get { return _gameField; }
-            set { _gameField = value; }
         }
 
         public int PlayerY
@@ -36,112 +43,144 @@ namespace LitleGame.GameField
             get { return _playerY; }
             set { _playerY = value; }
         }
-
-
-        public void DrawMainField(GameModel gm)
+         
+        public int BrickHeight
         {
-            Position position = new Position();
+            get { return _brickHeight; }
+        }
 
-            for (int y_elementArrPos = 0; y_elementArrPos < _gameField.GetLength(0); ++y_elementArrPos)
+        public void DrawMainField(GameModel gameModel)
+        {
+            InitializeField();
+            DrawPlayer(gameModel);
+            DrawBall(gameModel);
+            PrintField();
+        }
+
+        private void InitializeField()
+        {
+            for (int y = 0; y < _fieldHeight; y++)
             {
-                for (int x_elementArrPos = 0; x_elementArrPos < _gameField.GetLength(1); ++x_elementArrPos)
+                for (int x = 0; x < _fieldWidth; x++)
                 {
-                    cords.x_gameElement = x_elementArrPos;
-                    cords.y_gameElement = y_elementArrPos;
-
-                    if (y_elementArrPos >= 8)
+                    if (y >= BrickHeight || IsBrickDestroyed(x, y))
                     {
-                        _gameField[y_elementArrPos, x_elementArrPos] = " ";
+                        _gameField[y, x] = _emptyCell;
                     }
                     else
                     {
-                        _gameField[y_elementArrPos, x_elementArrPos] =
-                            coordibates.Any(s => s.y_ball_cord == cords.y_gameElement && s.x_ball_cord == cords.x_gameElement) ? " " : "#";
-                    }
-
-                    if (y_elementArrPos == _playerY && x_elementArrPos == gm.xDash.index)
-                    {
-                        _gameField[y_elementArrPos, x_elementArrPos] = "-";
-                    }
-
-
-
-                    if (y_elementArrPos == gm.y_ball.index && x_elementArrPos == gm.x_ball.index)
-                    {
-                        _gameField[y_elementArrPos, x_elementArrPos] = "O";
-
-                        coordibates.Add(new Coordinate
-                        {
-                            x_ball_cord = x_elementArrPos,
-                            y_ball_cord = y_elementArrPos
-                        });
+                        _gameField[y, x] = _brickSymbol;
                     }
                 }
             }
+        }
 
-            for (int y = 0; y < _gameField.GetLength(0); y++)
+        private void DrawPlayer(GameModel gameModel)
+        {
+            int playerX = gameModel.xDash.index;
+
+            if (IsInsideField(playerX, _playerY))
             {
-                for (int x = 0; x < _gameField.GetLength(1); x++)
+                _gameField[_playerY, playerX] = _playerSymbol;
+            }
+        }
+
+        private void DrawBall(GameModel gameModel)
+        {
+            int ballX = gameModel.x_ball.index;
+            int ballY = gameModel.y_ball.index;
+
+            if (IsInsideField(ballX, ballY))
+            {
+                _gameField[ballY, ballX] = _ballSymbol;
+            }
+        }
+
+        private void PrintField()
+        {
+            for (int y = 0; y < _fieldHeight; y++)
+            {
+                for (int x = 0; x < _fieldWidth; x++)
                 {
                     Console.Write(_gameField[y, x]);
                 }
+
                 Console.WriteLine();
             }
         }
-        
-        private bool isBrickAt(int x, int y)
+
+        private bool IsInsideField(int x, int y)
         {
-            if (y < 0 || y >= 8)
-            {
-                return false;
-            }
-
-            bool alreadyDestroyed = coordibates.Any(c => c.x_ball_cord == x && c.y_ball_cord == y);
-            return !alreadyDestroyed;
-
-            
+            return x >= 0 &&
+                   x < _fieldWidth &&
+                   y >= 0 &&
+                   y < _fieldHeight;
         }
+
+       
+
+        private bool IsBrickDestroyed(int x, int y)
+        {
+            return _destroyedBricks.Contains((x, y));
+        }
+
         private void DestroyBrickAt(int x, int y)
         {
-            coordibates.Add(new Coordinate { x_ball_cord = x, y_ball_cord = y });
+            _destroyedBricks.Add((x, y));
         }
 
-        public void BallMovment(GameModel gm)
+        public void MoveBall(GameModel gameModel)
         {
+            int currentX = gameModel.x_ball.index;
+            int currentY = gameModel.y_ball.index;
 
-            int nextX = gm.x_ball.isReverse ? gm.x_ball.index + 1 : gm.x_ball.index - 1;
-            int nextY = gm.y_ball.isReverse ? gm.y_ball.index + 1 : gm.y_ball.index - 1;
+            int nextX = gameModel.x_ball.IsReverse
+                ? currentX + 1
+                : currentX - 1;
 
-            if (isBrickAt(nextX, gm.y_ball.index))
+            int nextY = gameModel.y_ball.IsReverse
+                ? currentY + 1
+                : currentY - 1;
+
+            if (IsBrickAt(nextX, currentY))
             {
-                gm.x_ball.isReverse = !gm.x_ball.isReverse;
-                DestroyBrickAt(nextX, gm.y_ball.index);
+                gameModel.x_ball.IsReverse =
+                    !gameModel.x_ball.IsReverse;
+
+                DestroyBrickAt(nextX, currentY);
             }
 
-            if (isBrickAt(gm.x_ball.index, nextY))
+            if (IsBrickAt(currentX, nextY))
             {
-                gm.y_ball.isReverse = !gm.y_ball.isReverse;
-                DestroyBrickAt(gm.x_ball.index, nextY);
+                gameModel.y_ball.IsReverse =
+                    !gameModel.y_ball.IsReverse;
+
+                DestroyBrickAt(currentX, nextY);
             }
 
+            gameModel.y_ball = _mathAndLogic.CallcPositon(
+                gameModel.y_ball,
+                _fieldHeight);
 
-            gm.y_ball = mathAndLogic.CallcPositon(gm.y_ball, _gameField.GetLength(0));
-            gm.x_ball = mathAndLogic.CallcPositon(gm.x_ball, _gameField.GetLength(1));
-            
+            gameModel.x_ball = _mathAndLogic.CallcPositon(
+                gameModel.x_ball,
+                _fieldWidth);
         }
-       
+
         public void DrawGame()
         {
+            Console.CursorVisible = false;
+
             while (true)
             {
-                DrawMainField(this.gm);
                 Console.SetCursorPosition(0, 0);
-                Console.CursorVisible = false;
-                mathAndLogic.PlayerMovment(this.gm, this.fd);
-                BallMovment(this.gm);
-                
-            }
 
+                DrawMainField(_gameModel);
+
+                _mathAndLogic.PlayerMovement(_gameModel, this);
+
+                MoveBall(_gameModel);
+            }
         }
     }
 }
